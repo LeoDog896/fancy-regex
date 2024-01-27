@@ -81,7 +81,7 @@ impl<'a> Parser<'a> {
         })
     }
 
-    fn new(re: &str) -> Parser<'_> {
+    pub fn new(re: &str) -> Parser<'_> {
         Parser {
             re,
             backrefs: Default::default(),
