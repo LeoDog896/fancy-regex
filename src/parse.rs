@@ -41,9 +41,9 @@ const FLAG_IGNORE_SPACE: u32 = 1 << 4;
 const FLAG_UNICODE: u32 = 1 << 5;
 
 #[cfg(not(feature = "std"))]
-pub(crate) type NamedGroups = alloc::collections::BTreeMap<String, usize>;
+pub type NamedGroups = alloc::collections::BTreeMap<String, usize>;
 #[cfg(feature = "std")]
-pub(crate) type NamedGroups = std::collections::HashMap<String, usize>;
+pub type NamedGroups = std::collections::HashMap<String, usize>;
 
 #[derive(Debug)]
 pub struct ExprTree {
@@ -53,7 +53,7 @@ pub struct ExprTree {
 }
 
 #[derive(Debug)]
-pub(crate) struct Parser<'a> {
+pub struct Parser<'a> {
     re: &'a str, // source
     backrefs: BitSet,
     flags: u32,
@@ -65,7 +65,7 @@ pub(crate) struct Parser<'a> {
 impl<'a> Parser<'a> {
     /// Parse the regex and return an expression (AST) and a bit set with the indexes of groups
     /// that are referenced by backrefs.
-    pub(crate) fn parse(re: &str) -> Result<ExprTree> {
+    pub fn parse(re: &str) -> Result<ExprTree> {
         let mut p = Parser::new(re);
         let (ix, expr) = p.parse_re(0, 0)?;
         if ix < re.len() {
@@ -840,7 +840,7 @@ impl<'a> Parser<'a> {
 }
 
 // return (ix, value)
-pub(crate) fn parse_decimal(s: &str, ix: usize) -> Option<(usize, usize)> {
+pub fn parse_decimal(s: &str, ix: usize) -> Option<(usize, usize)> {
     let mut end = ix;
     while end < s.len() && is_digit(s.as_bytes()[end]) {
         end += 1;
@@ -853,7 +853,7 @@ pub(crate) fn parse_decimal(s: &str, ix: usize) -> Option<(usize, usize)> {
 /// Attempts to parse an identifier between the specified opening and closing
 /// delimiters.  On success, returns `Some((id, skip))`, where `skip` is how much
 /// of the string was used.
-pub(crate) fn parse_id<'a>(
+pub fn parse_id<'a>(
     s: &'a str,
     open: &'_ str,
     close: &'_ str,
@@ -899,7 +899,7 @@ fn is_hex_digit(b: u8) -> bool {
     is_digit(b) || (b'a' <= (b | 32) && (b | 32) <= b'f')
 }
 
-pub(crate) fn make_literal(s: &str) -> Expr {
+pub fn make_literal(s: &str) -> Expr {
     Expr::Literal {
         val: String::from(s),
         casei: false,

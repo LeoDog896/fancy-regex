@@ -183,7 +183,7 @@ mod analyze;
 mod compile;
 mod error;
 mod expand;
-mod parse;
+pub mod parse;
 mod replacer;
 mod vm;
 
